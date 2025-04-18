@@ -1,0 +1,31 @@
+-- This SQL query uses a CTE to calculate the top 5 highest spending customers based on total amount spent, from the top 10 highest spending cities.
+
+-- CTE to get top 10 cities by total payment
+WITH top_cities AS (
+    SELECT D.city
+    FROM payment A
+    INNER JOIN customer B ON A.customer_id = B.customer_id
+    INNER JOIN address C ON B.address_id = C.address_id
+    INNER JOIN city D ON C.city_id = D.city_id
+    GROUP BY D.city
+    ORDER BY SUM(A.amount) DESC
+    LIMIT 10
+)
+
+-- Main query to find top 5 paying customers within those cities
+SELECT 
+    SUM(A.amount) AS total_payment,
+    B.customer_id,
+    B.first_name AS customer_first_name,
+    B.last_name AS customer_last_name,
+    D.city,
+    E.country
+FROM payment A
+INNER JOIN customer B ON A.customer_id = B.customer_id
+INNER JOIN address C ON B.address_id = C.address_id
+INNER JOIN city D ON C.city_id = D.city_id
+INNER JOIN country E ON D.country_id = E.country_id
+INNER JOIN top_cities TC ON D.city = TC.city
+GROUP BY B.customer_id, B.first_name, B.last_name, D.city, E.country
+ORDER BY total_payment DESC
+LIMIT 5;
