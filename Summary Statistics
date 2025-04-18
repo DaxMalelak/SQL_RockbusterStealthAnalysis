@@ -1,4 +1,5 @@
 -- SQL Query to calculate numerical summary statistics
+
 SELECT COUNT(*) AS count_rows,
        MIN(release_year) AS earliest_release_year,
        MAX(release_year) AS latest_release_year,
@@ -23,6 +24,7 @@ SELECT COUNT(*) AS count_rows,
 FROM film;
 
 -- SQL Query to calculate non-numerical summary statistics
+
 SELECT
        MODE() WITHIN GROUP (ORDER BY language_id) AS modal_language_id,
        MODE() WITHIN GROUP (ORDER BY rating) AS modal_rating
