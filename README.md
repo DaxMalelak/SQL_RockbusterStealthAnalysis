@@ -41,7 +41,7 @@ Key entities in the dataset include:
 ---
 
 ### View Visualizations Here: 
-[Visualisations on Tableau Public] (https://public.tableau.com/app/profile/dax.malelak/vizzes)
+[Visualisations on Tableau Public](https://public.tableau.com/app/profile/dax.malelak/vizzes)
 
 ---
 
