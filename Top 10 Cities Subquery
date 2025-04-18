@@ -1,0 +1,24 @@
+-- SQL Query to find the top 10 cities that fall into the top 10 countries that Rockbuster customers are located in
+
+SELECT 
+    C.city,                        -- City name
+    D.country,                     -- Country name
+    COUNT(A.customer_id) AS count_of_customer  -- Total number of customers in the city
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id  -- Link customers to their addresses
+INNER JOIN city C ON B.city_id = C.city_id           -- Link addresses to cities
+INNER JOIN country D ON C.country_id = D.country_id  -- Link cities to countries
+WHERE D.country IN (
+    -- Subquery: Find the top 10 countries by customer count
+    SELECT D.country
+    FROM customer A
+    INNER JOIN address B ON A.address_id = B.address_id  -- Link customers to their addresses
+    INNER JOIN city C ON B.city_id = C.city_id           -- Link addresses to cities
+    INNER JOIN country D ON C.country_id = D.country_id  -- Link cities to countries
+    GROUP BY D.country                                   -- Group by country
+    ORDER BY COUNT(A.customer_id) DESC                  -- Sort countries by customer count
+    LIMIT 10                                             -- Select the top 10 countries
+)
+GROUP BY C.city, D.country  -- Group results by city and country
+ORDER BY COUNT(A.customer_id) DESC  -- Sort cities by customer count in descending order
+LIMIT 10;                           -- Select the top 10 cities
